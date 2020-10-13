@@ -441,6 +441,7 @@ class DbSync:
                     EMPTYASNULL BLANKSASNULL TRIMBLANKS TRUNCATECOLUMNS
                     TIMEFORMAT 'auto'
                     COMPUPDATE OFF STATUPDATE OFF
+                    DELIMITER ',' REMOVEQUOTES
                 """)
 
                 if compression == "gzip":
@@ -454,7 +455,7 @@ class DbSync:
                 copy_sql = """COPY {table} ({columns}) FROM 's3://{s3_bucket}/{s3_key}'
                     {copy_credentials}
                     {copy_options}
-                    DELIMITER ',' REMOVEQUOTES ESCAPE{compression_option}
+                    {compression_option}
                 """.format(
                     table=stage_table,
                     columns=', '.join([c['name'] for c in columns_with_trans]),
